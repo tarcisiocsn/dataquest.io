@@ -248,7 +248,7 @@ for row in apps_data[1:]:
 
 print(len(apps_4_or_greater))
 
-#or
+# second option
 
 n_of_apps = 0
 
@@ -287,3 +287,107 @@ n_apps_less_9 = len(apps_data[1:]) - len(ratings)
 print(avg_rating)
 print(n_apps_less_9)
 print(n_apps_more_9)
+
+# else statement
+
+apps_data = [['Call of Duty: Zombies', 5.0], ['Facebook', 0.0], ['Instagram', 0.0], ['Temple Run', 0.0]]
+
+for app in apps_data:
+    price = app[1]
+
+    if price == 0.0:
+        app.append('free')
+    else:
+        app.append('not free')
+
+print(apps_data)
+
+#output
+[['Call of Duty: Zombies', 5.0, 'not free'], ['Facebook', 0.0, 'free'], ['Instagram', 0.0, 'free'], ['Temple Run', 0.0, 'free']]
+
+# other exemple
+opened_file = open('AppleStore.csv')
+from csv import reader
+read_file = reader(opened_file)
+apps_data = list(read_file)
+
+for app in apps_data[1:]:
+    price = float(app[4])
+    # Complete code from here
+    if price == 0.0:
+        app.append('free')
+    else:
+        app.append('not free')
+apps_data[0].append('free_or_not')   # just create a new column to represent the free or not free strings     
+print(apps_data[:6])
+
+# elif statement
+
+# to avoid redundance in our code
+apps_data = [['Facebook', 0.0], ['Notion', 14.99], ['Astropad Standard', 29.99], ['NAVIGON Europe', 74.99]]
+
+for app in apps_data:
+    price = app[1]
+
+    if price == 0.0:
+        app.append('free')
+    if price > 0.0 and price < 20:
+        app.append('affordable')
+    if price >= 20 and price < 50:
+        app.append('expensive')
+    if price >= 50:
+        app.append('very expensive')
+
+print(apps_data)
+
+# the code below it's a redundance 
+app_ratings = [['Facebook', 3.5], ['Notion', 4.0], ['Astropad Standard', 4.5], ['NAVIGON Europe', 3.5]]
+
+for app in app_ratings: # ele tá pegando a lista dentro da lista
+    rating = app[1] # he is retrieve the second element in the list
+    if rating < 3.0:
+        app.append('below average') # está adicionando essa string dentro da lista
+    elif rating >= 3.0 and rating < 4.0:
+        app.append('roughly average')
+    else:
+        app.append('better than average')
+print(app_ratings)
+
+# output
+[['Facebook', 3.5, 'roughly average'], ['Notion', 4.0, 'better than average'], ['Astropad Standard', 4.5, 'better than average'], ['NAVIGON Europe', 3.5, 'roughly average']]
+
+# elif statement in the file from apple store
+
+opened_file = open('AppleStore.csv')
+from csv import reader
+read_file = reader(opened_file)
+apps_data = list(read_file)
+
+for app in apps_data[1:]:
+    price = float(app[4])
+    # Complete code from here
+    if price == 0.0:
+        app.append('free')
+    elif price > 0 and price < 20:
+        app.append('affordable')
+    elif price >= 20 and price < 50:
+        app.append('expensive')
+    elif price >= 50:
+        app.append('very expensive')
+apps_data[0].append('price_label')
+print(apps_data[:6])
+#output
+[['id', 'track_name', 'size_bytes', 'currency', 'price', 'rating_count_tot', 'rating_count_ver', 'user_rating', 'user_rating_ver', 'ver', 'cont_rating', 'prime_genre', 'sup_devices.num', 'ipadSc_urls.num', 'lang.num', 'vpp_lic', 'price_label'], 
+ ['284882215', 'Facebook', '389879808', 'USD', '0.0', '2974676', '212', '3.5', '3.5', '95.0', '4+', 'Social Networking', '37', '1', '29', '1', 'free'], 
+ ['389801252', 'Instagram', '113954816', 'USD', '0.0', '2161558', '1289', '4.5', '4.0', '10.23', '12+', 'Photo & Video', '37', '0', '29', '1', 'free'], 
+ ['529479190', 'Clash of Clans', '116476928', 'USD', '0.0', '2130805', '579', '4.5', '4.5', '9.24.12', '9+', 'Games', '38', '5', '18', '1', 'free'], 
+ ['420009108', 'Temple Run', '65921024', 'USD', '0.0', '1724546', '3842', '4.5', '4.0', '1.6.2', '9+', 'Games', '40', '5', '1', '1', 'free'], 
+ ['284035177', 'Pandora - Music & Radio', '130242560', 'USD', '0.0', '1126879', '3594', '4.0', '4.5', '8.4.1', '12+', 'Music', '37', '4', '1', '1', 'free']]
+
+# change the date
+date = "July 23, 2009"
+year = fetch_year("July 23, 2009")
+print(year)
+
+#output
+2009
