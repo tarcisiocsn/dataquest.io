@@ -951,3 +951,51 @@ result_2 = divide() # no error
 #is defined there. If it doesn't find it there, it doesn't cause an error; rather, it continues to search in the global scope (the scope of the main 
 #program).
 
+# -------------------------------------------------------------------
+# Remove duplicate - intro
+from csv import reader
+opened_file = open('artworks.csv')
+read_file = reader(opened_file)
+moma = list(read_file)
+moma = moma[1:]
+
+# change a string
+age1 = "I am thirty-one years old"
+age2 = age1.replace('one', 'two')
+print(age2)
+#output
+"I am thirty-two years old"
+
+# remove strngs in some column (column index 2 and column index 5, for exemple)
+
+for row in moma: # we need to that, because is a list of a list - interation over a row in a list of a list
+    nationality = row[2]
+    nationality = nationality.replace("(","") # é pra tirar os parentes da string, por isso temos que fazer "2 vezes"pq tem dois parentes, exemplo (America)
+    nationality = nationality.replace(")","")
+    row[2] = nationality
+    
+for row in moma:
+    gender = row[5]
+    gender = gender.replace("(","")
+    gender = gender.replace(")","")
+    row[5] = gender
+----
+# capslock on the strings 
+for row in moma:
+    gender = row[5]
+    # convert the gender to title case
+    gender = gender.title()
+    
+    # if there is no gender, set a descriptive value
+    if not gender:
+        gender = 'Gender Unknown/Other'
+    row[5] = gender # Assign the modified variable back to list index 5 of the row. para continuar na lista
+
+for row in moma:
+    nationality = row[2]
+    nationality = nationality.title()
+    
+    if not nationality:
+        nationality = 'Nationality Unknown'
+    row[2] = nationality
+
