@@ -1024,7 +1024,192 @@ for s in test_data:
     stripped_test_data.append(s)
 print(stripped_test_data)
 
+----------------------
+# FREQUENCY TABLE
 
+# The decades variable is available
+# from the previous screen
+fruit_list = ['orange', 'orange', 'orange', 'banana',
+         'apple', 'banana', 'orange', 'banana',
+         'apple', 'banana']
+fruit_freq = {}
+for fruit in fruit_list:
+    if fruit in fruit_freq:
+        fruit_freq[fruit] += 1
+    else:
+        fruit_freq[fruit] = 1
+    print(fruit_freq)
+
+# .FORMAT()
+
+output = "{}'s favorite number is {}".format('Kylie', 8)
+print(output)
+
+#other option
+output_1 = "{0}'s favorite number is {1}, {1} is {0}'s favorite number".format('Kylie', 8)
+print(output_1)
+
+#output
+Kylie's favorite number is 8
+Kylie's favorite number is 8, 8 is Kylie's
+
+
+# Format() method exemple
+artist = "Pablo Picasso"
+birth_year = 1881
+
+template = "{name}'s birth year is {year}"
+output = template.format(name = artist, year = birth_year)
+
+print(output)
+
+# function to show the artwork for the artist selected
+def artist_summary(artist):
+    artist_work = artist_freq[artist]
+    template = "There are {num} artworks by {name} in the dataset"
+    output = template.format(name = artist, num = artist_work)
     
-   
+    return print(output)
 
+artist_summary('Henri Matisse')
+
+# for loop using format()
+pop_millions = [
+    ["China", 1379.302771],
+    ["India", 1281.935991],
+    ["USA",  326.625791],
+    ["Indonesia",  260.580739],
+    ["Brazil",  207.353391],
+]
+
+template = "The population of {name} is {num:,.2f} million"
+
+for row in pop_millions:
+    country = row[0]
+    population = row[1]
+    output = template.format(name = country, num = population)
+    print(output)
+
+# Output
+The population of China is 1,379.30 million
+The population of India is 1,281.94 million
+The population of USA is 326.63 million
+The population of Indonesia is 260.58 million
+The population of Brazil is 207.35 million
+
+# .format() and loop by gender 
+gender_freq = {}
+for row in moma:
+    gender = row[5]
+    if gender in gender_freq:
+        gender_freq[gender] += 1
+    else:
+        gender_freq[gender] = 1
+        
+
+for gender, value in gender_freq.items():
+    output = "There are {num:,} artworks by {name} artists".format(num = value, name = gender)
+    print(output) 
+    
+# Output
+There are 2,443 artworks by Female artists
+There are 13,491 artworks by Male artists
+There are 791 artworks by Gender Unknown/Other artists   
+
+
+------------------------------------------------
+# class
+class MyClass:
+    pass
+# uma opção de criar um pass é quando voce ainda nao criou uma classe, mas n quer que dê erro no seu codigo, se nao escrever pass e deixar vazio, dará erro
+class MyClass:
+    pass
+
+my_instance = MyClass()
+print(type(my_instance))
+
+#Output
+<class 'MyClass'>
+
+# create a method
+class MyClass:
+    def first_method():
+        return "This is my first method"
+    
+# exemplo of a method in the string (.replace()) - (list.append() - for list) etc..
+class MyClass:
+    
+    def first_method(self): # it's important to use self
+        return "This is my first method"
+    
+my_instance = MyClass()
+result = my_instance.first_method()
+print(result)
+
+#OUTPUT
+This is my first method
+
+# create another method in the class - that show a list
+
+class MyClass:
+    
+    def first_method(self):
+        return "This is my first method"
+    def return_list(self, input_list):
+        return input_list
+my_instance = MyClass()
+result = my_instance.return_list([1,2,3])
+print(result)
+
+#Output
+[1, 2, 3]
+
+
+# create a class and method with the atributes
+# The init method's most common usage is to store data as an attribute:
+# __init__ example
+
+class ExampleClass:
+    def __init__(self, string):
+        self.my_attribute = string
+
+mc = ExampleClass("Hola!")
+print(mc.my_attribute)
+# Output
+Hola!
+
+# new example of a class take a list
+class MyList:
+    def __init__(self, initial_data):
+        self.data = initial_data
+        
+# instantiate an object
+my_list = MyList([1,2,3,4,5])
+print(my_list.data)
+# Output
+[1, 2, 3, 4, 5]
+
+# exemple create lenght method 
+class MyList:
+
+    def __init__(self, initial_data):
+        self.data = initial_data
+        # Calculate the initial length
+        self.length = 0
+        for item in self.data:
+            self.length += 1
+
+    def append(self, new_item):
+        self.data = self.data + [new_item]
+        # Update the length here
+        self.length += 1
+
+my_list = MyList([1, 1, 2, 3, 5])
+print(my_list.length)
+
+my_list.append(8)
+print(my_list.length)
+
+#Output
+5
+6
