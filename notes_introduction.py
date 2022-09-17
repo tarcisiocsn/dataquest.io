@@ -1213,3 +1213,41 @@ print(my_list.length)
 #Output
 5
 6
+
+#---------------------------------------------------------------------
+# DATE AND TIME
+
+from csv import reader
+
+opened_file = open('potus_visitors_2015.csv')
+read_file = reader(opened_file)
+potus = list(read_file)
+potus = potus[1:]
+
+# example 01
+
+import datetime as dt
+
+eg_1 = dt.datetime(2000,1,1)
+print(eg_1)
+
+eg_2 = dt.datetime(1985, 3, 13, 21, 26, 2)
+print(eg_2)
+
+eg_3 = dt.datetime(1998, 7, 7, 8, 39)
+print(eg_3)
+
+ibm_founded = dt.datetime(1911, 6, 16)
+man_on_moon = dt.datetime(1969, 7, 20, 20, 17)
+
+print(ibm_founded)
+print(man_on_moon)
+
+#output
+2000-01-01 00:00:00
+1985-03-13 21:26:02
+1998-07-07 08:39:00
+1911-06-16 00:00:00
+1969-07-20 20:17:00
+# example 02
+
