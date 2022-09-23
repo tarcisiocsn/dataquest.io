@@ -614,6 +614,53 @@ f500["rank_change"] = f500["previous_rank"] - f500["rank"]
 rank_change_desc = f500["rank_change"].describe()
 
 #print the top2 
+#01 challenge
+usa_bool = f500["country"] == "USA"
+usa_df = f500[usa_bool] # peguei uma serie de valores falsos e inseri no df (tipo um filtro)
+
+usa_series = usa_df["industry"]
+industry_usa = usa_series.value_counts().head(2)
+print(industry_usa)
+
+# 02 challenge
+china_bool = f500["country"] == "China"
+china_df = f500[china_bool] # peguei uma serie de valores falsos e inseri no df (tipo um filtro)
+china_series = china_df["sector"]
+sector_china = china_series.value_counts().head(3)
+print(sector_china)
+
+#output
+
+Banks: Commercial and Savings               8
+Insurance: Property and Casualty (Stock)    7
+Name: industry, dtype: int64
+  
+Financials     25
+Energy         22
+Wholesalers     9
+Name: sector, dtype: int64
+#boa
+
+
+# Exploring Data with Pandas
+import pandas as pd
+# read the data set into a pandas dataframe
+f500 = pd.read_csv("f500.csv", index_col=0)
+f500.index.name = None
+
+# replace 0 values in the "previous_rank" column with NaN
+f500.loc[f500["previous_rank"] == 0, "previous_rank"] = np.nan
+
+f500_selection = f500.loc[:,["rank", "revenues", "revenue_change"]].head()
+
+#Output
+                          rank  revenues  revenue_change
+Walmart                      1    485873             0.8
+State Grid                   2    315199            -4.4
+Sinopec Group                3    267518            -9.1
+China National Petroleum     4    262573           -12.3
+Toyota Motor                 5    254694             7.7
+
 
 
 
