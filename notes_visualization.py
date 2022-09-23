@@ -5,7 +5,8 @@
 #pickup_year: the year of the trip
 #pickup_month: the month of the trip (January is 1, December is 12)
 #pickup_day: the day of the month of the trip
-#pickup_location_code: the airport or borough where the the trip started
+#pickup_
+ation_code: the airport or borough where the the trip started
 #dropoff_location_code: the airport or borough where the the trip finished
 #trip_distance: the distance of the trip in miles
 #trip_length: the length of the trip in seconds
@@ -573,7 +574,46 @@ motor_bool = f500["industry"] == "Motor Vehicles and Parts"
 # Use the motor_bool boolean series to index the country column. Assign the result to motor_countries.
 motor_countries = f500.loc[motor_bool, "country"]
 
+# This uses Series.value_counts() and Series.head() to display the 5 most common values in the previous_rank column, 
+#but adds an additional dropna=False parameter, which stops the Series.value_counts() method from excluding null values when it 
+#makes its calculation, as shown in the Series.value_counts() documentation.
+import numpy as np
+prev_rank_before = f500["previous_rank"].value_counts(dropna=False).head()
+f500.loc[f500["previous_rank"] == 0, "previous_rank"] = np.nan
+prev_rank_after = f500["previous_rank"].value_counts(dropna=False).head()
 
+#befor
+previous_rank
+0	33
+159	1
+147	1
+148	1
+#after
+previous_rank
+NaN	33
+471.0	1
+234.0	1
+125.0	1
+
+# add a new column
+top5_rank_revenue["year_founded"] = 0
+print(top5_rank_revenue)
+
+#output
+_                         rank  revenues  year_founded
+Walmart                      1         0             0
+State Grid                   2         0             0
+Sinopec Group                3       999             0
+China National Petroleum     4         0             0
+Toyota Motor                 5         0             0
+
+# add a new column - with the diference between 2 columns
+
+f500["rank_change"] = f500["previous_rank"] - f500["rank"]
+
+rank_change_desc = f500["rank_change"].describe()
+
+#print the top2 
 
 
 
