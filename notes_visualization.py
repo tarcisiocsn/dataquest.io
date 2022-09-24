@@ -1032,8 +1032,87 @@ laptops.to_csv("laptops_cleaned.csv", index = False)
 
 
 
+######################################################################################
+
+#visualization
+
+import matplotlib.pyplot as plt
+month_number = [1, 2, 3, 4, 5, 6, 7]
+new_deaths = [213, 2729, 37718, 184064, 143119, 136073, 165003]
+
+#The two arrays must be equal in length, or some coordinates will remain unpaired, and Matplotlib will raise an error.
+plt.plot(month_number, new_deaths)
+plt.show()
 
 
+month_number = [1, 2, 3, 4, 5, 6, 7]
+new_cases = [9926, 76246, 681488, 2336640,
+             2835147, 4226655, 6942042]
+
+import matplotlib.pyplot as plt
+plt.plot(month_number, new_cases)
+plt.ticklabel_format(axis='y', style='plain') # para não ficar com a notaçao cientifica de 10ˆ6
+plt.show()
+
+#The axis parameter defines which axis to configure — its arguments are the strings 'x', 'y', and 'both'.
+
+#The style parameter controls the notation style (plain or scientific). Its arguments are 'sci', 'scientific', and 'plain'.
+
+#The next thing we're going to do is use the plt.title() function to add a title to our line graph.
+plt.plot(month_number, new_cases)
+plt.ticklabel_format(axis='y', style='plain')
+plt.title('New Reported Cases By Month (Globally)')
+plt.xlabel('Month Number')
+plt.ylabel('Number Of Cases')
+plt.show()
+
+
+# INTRUCTIONS
+Import the pandas module as pd.
+Read in the WHO_time_series.csv file using the pd.read_csv() function. Assign the resulting DataFrame to a variable named who_time_series.
+Modify the Date_reported column in who_time_series to a datetime data type using pd.to_datetime().
+Print the first and the last five rows and examine the data points. Be sure to specify print().
+Print information about the dataset using the DataFrame.info() method. How many rows and columns does the dataset have? Do you see any missing values?
+
+import pandas as pd 
+who_time_series = pd.read_csv('WHO_time_series.csv')
+who_time_series["Date_reported"] = pd.to_datetime(who_time_series['Date_reported'])
+print(who_time_series.head(5))
+print(who_time_series.tail(5))
+print(who_time_series.info())
+
+
+## WORK WITH PANDAS AND MATPLOTLIB
+import pandas as pd
+import matplotlib.pyplot as plt
+
+plt.plot(bike_sharing['dteday'], bike_sharing['cnt'])
+plt.show() # não vai mostrar as datas no x-axis, pq está como object, precisamos mudar para datetime
+
+bike_sharing = pd.read_csv('day.csv') 
+bike_sharing['dteday'] = pd.to_datetime(bike_sharing['dteday']) # agora vai mostrar
+plt.plot(bike_sharing['dteday'], bike_sharing['cnt'])
+plt.xticks(rotation=45) # para os nomes serem melho vistos
+plt.show()
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+bike_sharing = pd.read_csv('/Users/tarcisio/Documents/Projects_python/project_shared_bike/Bike-Sharing-Dataset/day.csv')
+print(bike_sharing.head(5))
+print(bike_sharing.tail(5))
+bike_sharing.info()
+
+bike_sharing['dteday'] = pd.to_datetime(bike_sharing['dteday'])
+
+plt.plot(bike_sharing['dteday'], bike_sharing['casual'], label = 'Casual')
+plt.plot(bike_sharing['dteday'], bike_sharing['registered'], label = 'Registered')
+plt.xticks(rotation = 30)
+plt.ylabel('Bikes Rented')
+plt.xlabel('Date')
+plt.title('Bikes Rented: Casual vs. Registered')
+plt.legend()
+plt.show()
 
 
 
