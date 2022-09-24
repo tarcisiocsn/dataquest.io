@@ -662,25 +662,387 @@ China National Petroleum     4    262573           -12.3
 Toyota Motor                 5    254694             7.7
 
 
+# diference between iloc and loc
+# iloc = index loc = with the name
+
+# selec the fifth row -  a quinta linha, mas terá todas as colunas
+fifth_row = f500.iloc[4] 
+print(fifth_row)
+
+#selec the value in first row of the company column
+company_value = f500.iloc[0,0]
+
+With loc[], the ending slice is included.
+With iloc[], the ending slice is not included.
+
+Select by integer position	                Explicit Syntax	                  Shorthand Convention
+Single column from dataframe	              df.iloc[:,3]	
+List of columns from dataframe	            df.iloc[:,[3,5,6]]	
+Slice of columns from dataframe	           df.iloc[:,3:7]	
+Single row from dataframe	                 df.iloc[20]	
+List of rows from dataframe	               df.iloc[[0,3,8]]	
+Slice of rows from dataframe	              df.iloc[3:5]	                     df[3:5]
+Single items from series	                  s.iloc[8]	                        s[8]
+List of item from series	                  s.iloc[[2,8,1]]	                  s[[2,8,1]]
+Slice of items from series	                s.iloc[5:10]	                     s[5:10]
 
 
 
+first_three_rows = f500[:3]
+#Select the first and seventh rows and the first five columns of the f500 dataframe. Assign the result to first_seventh_row_slice.
+first_seventh_row_slice = f500.iloc[[0,6],0:5]
+
+
+# usando booleans para filtrar
+f500_bool = f500["previous_rank"].isnull()
+f500_filtered = f500[f500_bool]
+null_previous_rank = f500_filtered.loc[:,['company', 'rank', 'previous_rank']]
+
+#Use the Series.notnull() method to select all rows from f500 that have a non-null value for the previous_rank column. Assign the result to previously_ranked
+previously_ranked = f500[f500["previous_rank"].notnull()]
+
+rank_change = previously_ranked["previous_rank"] -previously_ranked["rank"]
+
+#Assign the values in the rank_change to a new column in the f500 dataframe, "rank_change".
+f500["rank_change"] = rank_change
+
+
+# combined booleans series
+#Suppose we wanted to find the companies in f500_sel with more than 265 billion in revenue that are headquartered in China.
+china = f500["country"] == "China" # series de v ou f para paises China
+
+over_265 = f500["revenues"] > 265000 # series maior que 265 bilhoes
+
+combined = over_265 & china
+
+china_265 = f500[combined]
+
+print(china_265)
+#output
+      company  rank  revenues  revenue_change  profits  assets  \
+1     State Grid     2    315199            -4.4   9571.3  489838   
+2  Sinopec Group     3    267518            -9.1   1257.9  310726   ...........
+
+
+#Select all companies with revenues over 100 billion and negative profits from the f500 dataframe. The result should include all columns.
+negative_profits = f500["profits"] < 0  
+
+large_revenue = f500["revenues"] > 100000 
+
+combined = negative_profits & large_revenue
+
+big_rev_neg_profit = f500[combined]
+
+print(big_rev_neg_profit)
+
+#output
+company  rank  revenues  revenue_change  profits   assets  \
+32  Japan Post Holdings    33    122990             3.6   -267.4  2631385   
+44              Chevron    45    107567           -18.0   -497.0       ////////////
+
+pandas	Python              equivalent	                      Meaning
+a & b	                     a and b	                         True if both a and b are True, else False
+a | b	                     a or b	                          True if either a or b is True
+~a	                        not a	                           True if a is False, else False
+
+#Select all rows for companies whose country value is either Brazil or Venezuela. Assign the result to brazil_venezuela.
+brazil_venezuela = f500[(f500["country"] == "Brazil") | (f500["country"] == "Venezuela")]
+
+
+#Select the first five companies in the Technology sector for which the country is not the USA from the f500 dataframe. Assign the result to tech_outside_usa.
+tech_outside_usa = f500[(f500["sector"] == "Technology") & ~(f500["country"] == "USA")].head(5)
+
+##Select only the rows that have a country name equal to Japan.
+selected_rows = f500[f500["country"] == "Japan"]
+
+# Use DataFrame.sort_values() to sort those rows by the employees column in descending order.
+# Use DataFrame.iloc[] to select the first row from the sorted dataframe
+sorted_rows = selected_rows.sort_values("employees", ascending = False).iloc[0] 
+#Extract the company name from the index label company from the first row. Assign the result to top_japanese_employer.
+top_japanese_employer = sorted_rows["company"] # select the first row 
 
 
 
+#LOOP  FOR AGGREGATION IN PANDAS 
+
+#To identify the unique countries, we can use the Series.unique() method. This method returns an array of unique values from any series. Then, 
+#we can loop over that array and perform our operation. Here's what that looks like:
+
+# Create an empty dictionary to store the results
+avg_rev_by_country = {}
+
+# Create an array of unique countries
+countries = f500["country"].unique() # CRIA UM ARRAY COM TODOS OS PAISES - ARRAY COM UMA LISTA DE TODOS OS PAÍSES
+
+# Use a for loop to iterate over the countries
+for c in countries:
+    # Use boolean comparison to select only rows that
+    # correspond to a specific country
+    selected_rows = f500[f500["country"] == c]
+    # Calculate the mean average revenue for just those rows
+    mean = selected_rows["revenues"].mean()
+    # Assign the mean value to the dictionary, using the
+    # country name as the key
+    avg_rev_by_country[c] = mean
+#OUTPUT PARA countries
+countries
+ndarray (<class 'numpy.ndarray'>)
+array(['USA', 'China', 'Japan', 'Germany', 'Netherlands', 'Britain',
+       'South Korea', 'Switzerland', 'France', 'Taiwan', 'Singapore',
+       'Italy', 'Russia', 'Spain', 'Brazil', 'Mexico', 'Luxembourg',
+       'India', 'Malaysia', 'Thailand', 'Australia', 'Belgium', 'Norway',
+       'Canada', 'Ireland', 'Indonesia', 'Denmark', 'Saudi Arabia',
+       'Sweden', 'Finland', 'Venezuela', 'Turkey', 'U.A.E', 'Israel'],
+      dtype=object)
+#output real para avg_rev...
+{'USA': 64218.371212121216,
+ 'China': 55397.880733944956,
+ 'Japan': 53164.03921568627,
+ 'Germany': 63915.0,
+ 'Netherlands': 61708.92857142857,
+ 'Britain': 51588.708333333336,
+ 'South Korea': 49725.6,
+ ...
+ }
+
+
+#we're going to produce the following dictionary of the top employer in each country:
+{'USA': 'Walmart',
+ 'China': 'China National Petroleum',
+ 'Japan': 'Toyota Motor',
+ ...
+ 'Turkey': 'Koc Holding',
+ 'U.A.E': 'Emirates Group',
+ 'Israel': 'Teva Pharmaceutical Industries'}
+
+# Create an empty dictionary to store the results
+top_employer_by_country = {}
+
+# Create an array of unique countries
+countries = f500["country"].unique()
+
+# Use a for loop to iterate over the countries
+for c in countries:
+    # Use boolean comparison to select only rows that
+    # correspond to a specific country
+    selected_rows = f500[f500["country"] == c]
+    # Calculate the mean average revenue for just those rows
+    sorted_rows = selected_rows.sort_values("employees", ascending = False).iloc[0] 
+    # Assign the mean value to the dictionary, using the
+    # country name as the key
+    top_employer_by_country[c] = sorted_rows["company"]
+
+    
+   
+# challenge top
+#instructions
+1.Create a new column roa in the f500 dataframe, containing the return on assets metric for each company.
+2. Aggregate the data by the sector column, and create a dictionary top_roa_by_sector, with:
+- Dictionary keys with the sector name.
+- Dictionary values with the company name with the highest ROA value from that sector.
+
+#create roa
+roa = f500["profits"]/f500["assets"]
+# create a column named roa
+f500["roa"] = roa
+
+# array of the sectors 
+sector_companies = f500["sector"].unique()
+
+top_roa_by_sector = {}
+# loop in the array
+for s in sector_companies:
+    selected_rows = f500[f500["sector"] == s] # dataframe filtrado
+    #sorted sector 
+    sorted_rows = selected_rows.sort_values("roa", ascending = False).iloc[0]  # vai ter um datafram com todas as informaçoes desse top "roa" (primeira linha)
+    top_roa_by_sector[s] = sorted_rows["company"]
+print(top_roa_by_sector)
+
+################--------------------------------------------
+
+# DATA CLEANING BASICS
+
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 1303 entries, 0 to 1302
+Data columns (total 13 columns):
+ #   Column                    Non-Null Count  Dtype 
+---  ------                    --------------  ----- 
+ 0   Manufacturer              1303 non-null   object
+ 1   Model Name                1303 non-null   object
+ 2   Category                  1303 non-null   object
+ 3   Screen Size               1303 non-null   object
+ 4   Screen                    1303 non-null   object
+ 5   CPU                       1303 non-null   object
+ 6   RAM                       1303 non-null   object
+ 7    Storage                  1303 non-null   object
+ 8   GPU                       1303 non-null   object
+ 9   Operating System          1303 non-null   object
+ 10  Operating System Version  1133 non-null   object
+ 11  Weight                    1303 non-null   object
+ 12  Price (Euros)             1303 non-null   object
+
+We can see that every column is represented as the object type, 
+indicating that they are represented by strings, not numbers. Also, one of the columns, Operating System Version, has null values !1133 e não 1303.
+
+Remove any whitespace from the start and end of each column name.
+Create an empty list named new_columns.
+Use a for loop to iterate through each column name using the DataFrame.columns attribute. Inside the body of the for loop:
+Use the str.strip() method to remove whitespace from the start and end of the string.
+Append the updated column name to the new_columns list.
+Assign the updated column names to the DataFrame.columns attribute.
+
+
+# remove whitespaces from the column names
+
+new_columns = []
+for c in laptops.columns:
+    new_columns.append(c.strip())
+
+# change the DataFrame columns to a correct names
+laptops.columns = new_columns
+
+print(laptops.columns)
+
+#output - This returns an index object — a special type of NumPy ndarray — with the labels of each column:
+Index(['Manufacturer', 'Model Name', 'Category', 'Screen Size', 'Screen',
+       'CPU', 'RAM', 'Storage', 'GPU', 'Operating System',
+       'Operating System Version', 'Weight', 'Price (Euros)'],
+      dtype='object')
 
 
 
+# replace values
+import pandas as pd
+laptops = pd.read_csv('laptops.csv', encoding='Latin-1')
 
+def clean_col(col):
+    col = col.strip()
+    col = col.replace("Operating System", "os")
+    col = col.replace(" ", "_")
+    col = col.replace("(","")
+    col = col.replace(")","")
+    col = col.lower()
+    return col
 
+new_columns = []
+for c in laptops.columns:
+    clean_c = clean_col(c)
+    new_columns.append(clean_c)
 
-
-
-
-
-
-
+laptops.columns = new_columns
+print(laptops.columns)  
   
-  
-  
+# borA!!
+
+#The first step is to explore the data. One of the best ways to do this is to use the Series.unique() method to view all of the unique values in the column:
+print(laptops["screen_size"].dtype)
+print(laptops["screen_size"].unique())
+
+#output
+object
+['13.3"' '15.6"' '15.4"' '14.0"' '12.0"' '11.6"' '17.3"' '10.1"' '13.5"'
+ '12.5"' '13.0"' '18.4"' '13.9"' '12.3"' '17.0"' '15.0"' '14.1"' '11.3"']
+
+#Our next step is to identify patterns and special cases. We can observe the following:
+
+#All values in this column follow the same pattern - a series of digit and period characters, followed by a quote character (").
+#There are no special cases. Every value matches the same pattern.
+#We'll need to convert the column to a float dtype, as the int dtype won't be able to store the decimal values.
+#Let's identify any patterns and special cases in the ram column next.
+                                                                                                                            
+#opa
+
+#In the last exercise, we identified a clear pattern in the ram column - all values are integers and include the character GB at the end of the string:
+To convert both the ram and screen_size columns to numeric dtypes, we'll have to first remove the non-digit characters.
+['8GB' '16GB' '4GB' '2GB' '12GB' '6GB' '32GB' '24GB' '64GB']
+
+laptops["ram"] = laptops["ram"].str.replace('GB','')
+unique_ram = laptops["ram"].unique()
+#output
+unique_ram
+ndarray (<class 'numpy.ndarray'>)
+array(['8', '16', '4', '2', '12', '6', '32', '24', '64'], dtype=object)
+
+#Use the Series.astype() method to change the ram column to an integer dtype.
+Use the DataFrame.dtypes attribute to get a list of the column names and types from the laptops dataframe. Assign the result to dtypes.
+After running your code, use the variable inspector to view the dtypes variable to see the results of your code.
+laptops["ram"] = laptops["ram"].str.replace('GB','')
+laptops["ram"] = laptops["ram"].astype(int)
+
+dtypes = laptops.dtypes
+
+# rename column
+#Below, we specify the axis=1 parameter so pandas knows that we want to rename labels in the column axis:
+
+laptops.rename({"screen_size": "screen_size_inches"}, axis=1, inplace=True)
+print(laptops.dtypes)
+
+
+# criou uma coluna nova chamada gpu_manufacturer que pega a primeira string dos elementos da coluna "gpu". Então tá lá: ex. Intel Core i5 2.3GHz. então ele pega o Intel 
+laptops["gpu_manufacturer"] = (laptops["gpu"]
+                                       .str.split()
+                                       .str[0]
+                              )
+# extract the manufacturer name fromm the cpu column
+laptops["cpu_manufacturer"] = laptops["cpu"].str.split().str[0]
+
+#use the series.value_counts() method
+cpu_manufacturer_counts=laptops["cpu_manufacturer"].value_counts()
+
+#output
+cpu_manufacturer_counts
+Series (<class 'pandas.core.series.Series'>)
+cpu_manufacturer
+Intel	1240
+AMD	62
+Samsung	1
+
+#We have created a dictionary for you to use with mapping. Note that we have included both the correct and incorrect spelling of macOS as keys, 
+#otherwise we'll end up with null values.
+mapping_dict = {
+    'Android': 'Android',
+    'Chrome OS': 'Chrome OS',
+    'Linux': 'Linux',
+    'Mac OS': 'macOS',
+    'No OS': 'No OS',
+    'Windows': 'Windows',
+    'macOS': 'macOS'
+}
+
+#use series.map()
+laptops["os"] = laptops["os"].map(mapping_dict)
+
+# Use DataFrame.dropna() to remove any rows from the laptops dataframe that have null values. Assign the result to laptops_no_null_rows.
+laptops_no_null_rows = laptops.dropna()
+
+# Use DataFrame.dropna() to remove any columns from the laptops dataframe that have null values. Assign the result to laptops_no_null_cols.
+laptops_no_null_cols = laptops.dropna(axis = 1)
+
+
+#challenge top
+#Convert the values in the weight column to numeric values.
+#Rename the weight column to weight_kg.
+#Use the DataFrame.to_csv() method to save the laptops dataframe to a CSV file laptops_cleaned.csv without index labels.
+
+laptops["weight"] = laptops["weight"].str.replace("kgs","").str.replace("kg", "").astype(float) # tem que primeiro deletar os kgs, pq se colocar primeiro o kg ele vai deletar os kg do kgs, e vai ficar "s", então bota kgs, pra depois deletar os kg faltantes)
+
+laptops.rename({"weight": "weight_kg"}, axis=1, inplace=True)
+
+laptops.to_csv("laptops_cleaned.csv", index = False)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
