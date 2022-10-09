@@ -72,9 +72,42 @@ if False or True and False:
 if True or False and False:
     print('B')
 # apeas a B terá output (começamos pelo AND primeiro para calcular)
-    
 
+-------------------
+# Given a list of integers, write a Python program that counts how many values in the list are greater than 100
 
+#Write a program to count how many numbers greater than 100 are in the values list.
+#Assign the answer to a variable named num_bigger.
+
+values = [80, 109, 111, 109, 94, 93, 108, 107, 81, 111, 114, 102, 81, 107, 120, 108, 92, 113, 119, 97]
+
+num_bigger = 0
+for value in values:
+    if value > 100:
+        num_bigger += 1
+print(num_bigger)
+
+#output
+13
+
+-------------------
+# Given a list of integers, write a Python program that counts how many even and odd values it contains.
+
+values = [80, 109, 111, 109, 94, 93, 108, 107, 81, 111, 114, 102, 81, 107, 120, 108, 92, 113, 119, 97]
+
+num_even = 0
+num_odd = 0
+for value in values:
+    if value%2 == 0:
+        num_even += 1
+    else:
+        num_odd += 1
+print(num_even)
+print(num_odd)
+
+#Output
+8
+12
 
 
 
