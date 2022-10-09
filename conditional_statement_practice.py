@@ -109,6 +109,33 @@ print(num_odd)
 8
 12
 
+-------------------
+# Write a Python program that checks whether two given lists are the reverse of one another.
+values1 = [80, 109, 111, 109, 94, 93, 108, 107, 81, 111, 101, 114, 102, 81, 107, 120, 108, 92, 113, 119, 97]
+values2 = [97, 119, 113, 92, 108, 120, 107, 81, 102, 114, 110, 111, 81, 107, 108, 93, 94, 109, 111, 109, 80]
+
+# Write your answer below
+reversed_values = []
+for i in range(len(values1)):
+    reversed_values.append(values1[-i -1])
+
+is_reversed = 0
+if reversed_values == values2:
+    is_reverse = True
+else:
+    is_reverse = False
+
+
+-------------------
+# reverse exemple
+
+values = [16, 1, 7, 2, 19, 12, 5, 20, 2, 10, 17, 14, 1, 9]
+
+# Write your answer below
+reversed_values = []
+for i in range(len(values)):
+    reversed_values.append(values[-i -1])
+
 
 
 
