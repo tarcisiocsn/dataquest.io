@@ -136,6 +136,89 @@ reversed_values = []
 for i in range(len(values)):
     reversed_values.append(values[-i -1])
 
+ -------------------   
+# Write a program that creates a list named common that contains the characters that are common to both s1 and s2.
+
+s1 = 'I have been busier these days due to having a lot on my plate.'
+s2 = 'You have been very supportive towards my recent endeavors.'
+
+common = []
+for i in s1:
+    if i in s2 and i not in common:
+        common.append(i)
+print(common)
+
+#Output
+[' ', 'h', 'a', 'v', 'e', 'b', 'n', 'u', 's', 'i', 'r', 't', 'd', 'y', 'o', 'm', 'p', '.']
+
+ ------------------- 
+#Given a list of numbers, calculate the maximum value in that list. The goal is to avoid using the max() function.
+values = [72, 48, 7, 66, 62, 32, 33, 75, 30, 85, 6, 85, 82, 88, 30, 32, 78, 39, 57, 96, 45, 57, 61, 10, 62, 48, 32, 96, 75, 15]
+
+maximum = 0
+for value in values:
+    if value > maximum:
+        maximum = value
+print(maximum)
+#output
+96
+
+ ------------------- 
+#Given a list of numbers, calculate the minimum value in that list. The goal is to avoid using the min() function.
+
+values = [72, 48, 7, 66, 62, 32, 33, 75, 30, 85, 6, 85, 82, 88, 30, 32, 78, 39, 57, 96, 45, 57, 61, 10, 62, 48, 32, 96, 75, 15]
+
+minimum = 10000000 # colocar um numero bem maior para saber que algum da lsita values será menor que minimum
+for value in values:
+    if value < minimum:
+        minimum = value
+print(minimum)
+
+#output
+6
+
+-------------------
+# Given a list of numbers, find a pair of distinct values whose sum is equal to 100.
+values = [72, 50, 48, 50, 7, 66, 62, 32, 33, 75, 30, 85, 6, 85, 82, 88, 30, 32, 78, 39, 57, 96, 45, 57, 61, 10, 62, 48, 32, 96, 75, 15, 50, 50]
+
+value1 = None
+value2 = None
+
+for x in values:
+    for y in values:
+        if x+y == 100 and x != y:
+            value1 = x
+            value2 = y
+
+------------------
+# Given a list of numbers, find the number that appears the most.
+values = [72, 50, 48, 50, 7, 66, 62, 32, 33, 75, 30, 85, 6, 85, 82, 88, 30, 32, 78, 39, 57, 96, 45, 57, 61, 32, 10, 62, 48, 32, 96, 75, 15]
+
+most_frequent = values[0]
+
+for value in values:
+    if values.count(value) > values.count(most_frequent):
+        most_frequent = value
+print(most_frequent)
+
+#output
+32
+-------------------
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
 
 
 
