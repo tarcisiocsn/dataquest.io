@@ -204,7 +204,92 @@ print(most_frequent)
 #output
 32
 -------------------
+#Count how many names have an estimated number greater than or equal to 100,000.
+import csv 
+file = open('dq_unisex_names.csv')
+reader = csv.reader(file)
+all_rows = list(reader)
+rows = all_rows[1:]
+
+names_100k =[]
+for row in rows:
+    value = row[1]
+    if float(value) > 100000:
+        names_100k.append(row[0])
+        
+count = len(names_100k)
             
+#other option
+import csv
+file = open('dq_unisex_names.csv')
+reader = csv.reader(file)
+rows = list(reader)
+
+count = 0
+for row in rows[1:]:
+    if float(row[1]) >= 100000:
+        count += 1
+
+print(count)
+
+#output
+6
+
+-------------------
+# In this problem, you'll create a new list containing only the rows where the length of the corresponding name is greater than 10
+import csv
+file = open('dq_unisex_names.csv')
+reader = csv.reader(file)
+all_rows = list(reader)
+rows = all_rows[1:]
+
+longest_names = []
+for row in rows:
+    value = row[0]
+    if len(value) > 10:
+        longest_names.append(value)
+
+print(longest_names[:5])
+
+-------------------
+# In this practice problem, you'll need to find the most common unisex named. This means finding the name for which the estimated_number is the largest.
+import csv
+file = open('dq_unisex_names.csv')
+reader = csv.reader(file)
+all_rows = list(reader)
+rows = all_rows[1:]
+
+maximum = None
+max_name = None
+for row in rows:
+    if maximum == None or float(row[1]) > maximum:
+        maximum = float(row[1])
+        max_name = row[0]
+print(max_name)
+    
+#Output
+Casey
+
+-------------------
+# Let's calculate all names that have an estimated number of at most 1,000 people (inclusive).
+import csv
+file = open('dq_unisex_names.csv')
+reader = csv.reader(file)
+all_rows = list(reader)
+rows = all_rows[1:]
+
+rare_names = []
+for row in rows:
+    value = row[1]
+    if float(value) <= 1000:
+        rare_names.append(row[0])
+        
+print(rare_names[:5])
+
+#output
+['Eliyah', 'Tonnie', 'Teagen', 'Rudi', 'Kamani']
+
+
             
             
             
